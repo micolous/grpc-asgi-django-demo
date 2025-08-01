@@ -19,11 +19,11 @@ _In this section:_ [ASGI concepts](#asgi-concepts) |
   These run in the same Python process, and they communicate using message
   queues.
 
-  The _application_ is shut down at the end of the request.
+  The _application_ instance is shut down at the end of the request.
 
 - Application frameworks (like Django) normally have a bootstrap process that
   allows them to perform expensive start-up tasks once, and re-use resources
-  like database connections between requests.
+  (like database connections) between requests.
 
 ### gRPC concepts
 
@@ -36,9 +36,13 @@ _In this section:_ [ASGI concepts](#asgi-concepts) |
   doesn't support running inside an ASGI or WSGI protocol server, as those are
   generally incompatible with [the gRPC-over-HTTP/2 protocol][grpc-http2].
 
-- gRPC service APIs are defined in [`.proto` files][service.proto]. `protoc`
-  uses this to generate bindings (`*_pb2{,_grpc}.py{,i}`), which you can
-  `import` as a Python module in your client and server.
+- gRPC service APIs are defined in [`.proto` file(s)][service.proto].
+
+  `protoc` uses the `.proto` file(s) to generate Python bindings
+  (`*_pb2{,_grpc}.py{,i}` files), which you can `import` as a Python module in
+  your client and server.
+
+  You could also use this to build bindings for other languages.
 
 - Web browsers and client-side scripts can't make regular gRPC requests. You
   need a transcoding proxy like [gRPC-JSON][grpc-json] or [gRPC-Web][grpc-web].

@@ -69,6 +69,9 @@ the Django admin interface at http://localhost:8080/admin/.
 
 ![Django admin panel](./img/django-admin.png)
 
+This demonstrates that basic HTTP `GET` and `POST` requests work with arbitrary
+content.
+
 ### Make a JSON API call
 
 The gRPC server's [`DemoService.Add` method][service.proto] is available over
@@ -110,9 +113,11 @@ You can trigger both [server-originated](#server-originated-errors) and
 `DemoService.Add` arguments both default to 0 if not supplied. If both `a` and
 `b` are `0`, the gRPC server will return an error:
 
+```sh
+curl -i --json '{}' http://localhost:8080/api/add
 ```
-$ curl -i --json '{}' http://localhost:8080/api/add
 
+```
 HTTP/1.1 400 Bad Request
 content-type: application/json
 x-envoy-upstream-service-time: 1
@@ -130,9 +135,11 @@ Envoy.
 If you call a JSON API with incorrect types, Envoy will respond with an error,
 without forwarding the request to the gRPC server:
 
+```sh
+curl -i --json '{"a": "hello", "b": "world"}' http://localhost:8080/api/add
 ```
-$ curl -i --json '{"a": "hello", "b": "world"}' http://localhost:8080/api/add
 
+```
 HTTP/1.1 400 Bad Request
 content-length: 83
 content-type: application/json
@@ -168,7 +175,7 @@ request through Envoy to the demo server.
 ## Limitations
 
 This demo is cut down to the minimum needed to demonstrate running an ASGI
-application via HTTP-over-gRPC.
+application via HTTP-over-gRPC, and interoperating with both gRPC and JSON APIs.
 
 Some general limitations:
 
@@ -206,13 +213,20 @@ Some general limitations:
 There are some limitations as a result of simplifications in this demo
 environment:
 
-- The Envoy server configuration in the demo environment does not use HTTPS or
-  backend TLS connections (but could be configured to do so).
+- The Envoy server configuration in the demo environment does not serve over
+  HTTPS or use backend TLS connections (but could be configured to do so).
 
 - The gRPC ASGI Django demo server does not implement TLS (but could).
 
-- Envoy runs as a separate Docker container. It could be integrated with the
-  main gRPC server container.
+- Envoy runs as a separate Docker container.
+
+  It could be integrated with the main gRPC server container, or used as a
+  load balancing proxy in front of multiple instances of the gRPC server
+  container.
+
+  What works best really depends on whether you want your server task's
+  interface to be HTTP, gRPC, or both; which in turn depends on what your
+  production environment offers.
 
 - No custom error types (for `google.rpc.Status.details`) are included in the
   `FileDescriptorSet` passed to Envoy, as the demo server doesn't use these.
@@ -221,12 +235,12 @@ environment:
 
 - This demo doesn't provide any API authentication or authorisation features.
 
+  A gRPC server can send and receive arbitrary HTTP headers over gRPC-JSON, so
+  you can use things like cookies.
+
   [OAuth 2.0 for Browser-Based Applications][bba] describes a
   Backend-for-Frontend architecture which could be implemented using a gRPC
   service exposed using gRPC-JSON.
-
-  A gRPC server can send and receive arbitrary HTTP headers over gRPC-JSON, so
-  you can use things like cookies.
 
   I have gotten this working with a React-based SPA, but there are _many_ moving
   parts in the server side and the frontend, so I've opted to leave these out.
@@ -246,6 +260,12 @@ environment:
 - Django is configured to use a local SQLite3 database in a local Docker Compose
   volume, rather than an external database server.
 
+- The `AsgiService` implementation waits for the ASGI application to finish
+  before returning the HTTP response to the client.
+
+  This could be moved to a background task, but needs some mechanism to ensure
+  these tasks complete in a reasonable time period.
+
 - Some parts of the build process are not pretty, by virtue of trying to keep
   the entire build process managed in Python.
 
@@ -255,7 +275,8 @@ environment:
   pushed builds to AWS ECR, and was deployed to AWS ECS on Fargate. All of the
   infrastructure for that was declared using Terraform.
 
-  Including that here is complicated, and highly specific to that deployment.
+  Those components are highly specific to that deployment, and complicated. So
+  I've left these all out.
 
 - There are no linters, type checks or tests in this demo.
 
