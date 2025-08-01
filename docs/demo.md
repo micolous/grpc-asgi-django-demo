@@ -70,7 +70,7 @@ the Django admin interface at http://localhost:8080/admin/.
 ![Django admin panel](./img/django-admin.png)
 
 This demonstrates that basic HTTP `GET` and `POST` requests work with arbitrary
-content.
+content, including cookies!
 
 ### Make a JSON API call
 
@@ -183,7 +183,7 @@ Some general limitations:
 - Django's `manage.py runserver` doesn't work (and will never work).
 
   Supporting that would mean finding a way to send gRPC over _WSGI_, which
-  doesn't support the parts of HTTP/2 that gRPC uses.
+  [doesn't support HTTP trailers][wsgi-trailers].
 
 - This demo relies on a number of Envoy-specific headers and features to work,
   which are not part of the [gRPC-JSON transcoding spec][aip-127], such as:
@@ -221,6 +221,10 @@ environment:
   HTTPS or use backend TLS connections (but could be configured to do so).
 
 - The gRPC ASGI Django demo server does not implement TLS (but could).
+
+- This demo doesn't send any CORS or CSRF headers. This could be added to
+  [your Envoy configuration][envoy-cors], or added to the gRPC server itself (as
+  gRPC response metadata is just HTTP response headers).
 
 - Envoy runs as a separate Docker container.
 
@@ -284,9 +288,12 @@ environment:
 
 - There are no linters, type checks or tests in this demo.
 
+**See also:** [comparisons with other solutions](./comparisons.md).
+
 [aip-127]: https://google.aip.dev/127
 [bba]: https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps
 [docker-engine]: https://docs.docker.com/engine/install/
+[envoy-cors]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/cors_filter
 [grpc-health-probe]: https://github.com/grpc-ecosystem/grpc-health-probe
 [grpc-http]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_json_transcoder_filter#sending-arbitrary-content
 [grpc-http2]: https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md
@@ -297,4 +304,5 @@ environment:
 [lua]: ./envoy/x_http_code_as_status.lua
 [service.proto]: ../proto/proto/grpc_asgi_django_demo/proto/v1/service.proto
 [settingspy]: ../server/src/grpc_asgi_django_demo/server/django/settings.py
+[wsgi-trailers]: https://github.com/python-web-sig/wsgi-ng/issues/9
 [x-forwarded-host]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_conn_man/headers.html#x-forwarded-host

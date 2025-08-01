@@ -27,7 +27,7 @@ flowchart LR
 ```
 
 This is much simpler than trying to serve gRPC from an ASGI protocol server,
-which would require extensions to support gRPC framing.
+which would still need something to provide gRPC-JSON or gRPC-Web transcoding!
 
 While this demo targets Django, this _could_ also work with other
 ASGI-compatible Python web frameworks like FastAPI - but this is left as an
@@ -48,6 +48,7 @@ exercise for the reader. :)
 - 🔰 **Start here:** [run the demo environment with Docker Compose](./docs/demo.md)
 - 📚 **Deep dive:** [architecture overview](./docs/architecture.md), including
   concepts, request flows, and limitations of this demo
+- 🥔 **Comparisons:** [alternative solutions](./docs/comparisons.md)
 - 💬 **Got issues, ideas or PRs?** [How to contribute to the project](./CONTRIBUTING.md)
 - 🔒 **Found a security bug?** [See the security policy](./SECURITY.md)
 
