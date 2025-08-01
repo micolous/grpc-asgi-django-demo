@@ -5,8 +5,8 @@ Thank you for your interest in improving the security of this project!
 This code is not actively maintained, and probably has security bugs. It is a
 "tech demo". :)
 
-There are a number of [intentional limitations](./README.md#limitations) in this
-software's design which deviates from "best practice" in order to simplify
+There are a number of [intentional limitations](./docs/demo.md#limitations) in
+this demo's design which deviates from "best practice" in order to simplify
 things for a "tech demo".
 
 This also probably uses old versions of software that has security bugs.
