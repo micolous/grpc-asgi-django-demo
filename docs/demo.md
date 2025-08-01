@@ -211,6 +211,9 @@ Some general limitations:
   to the `x-http-code` response header, and [a Lua script running in Envoy][lua]
   rewrites the response status code using that header.
 
+- Envoy logs all requests as `POST`, because it shows the HTTP method used when
+  communicating with the gRPC server, rather than what was used by the client.
+
 There are some limitations as a result of simplifications in this demo
 environment:
 
