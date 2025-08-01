@@ -1,0 +1,32 @@
+# NOTE: this file is used as both a .dockerignore and .gitignore file.
+#
+# .dockerignore has similar but much more limited syntax than .gitignore.
+# https://docs.docker.com/build/concepts/context/#dockerignore-files
+
+# Protobuf-generated code
+**/*_pb2.py
+**/*_pb2.pyi
+**/*_pb2_grpc.py
+**/*_pb2_grpc.pyi
+**/*.binpb
+
+# Python
+**/.pytype/
+**/.venv/
+**/__pycache__/
+**/dist/
+**/*.egg-info
+**/*.whl
+
+# Footguns
+**/.DS_Store
+**/Thumbs.db
+**/*.key
+**/*.pem
+**/.env
+**/.env*.local
+**/*.log*
+**/*~
+**/*.iml
+**/.idea
+**/.zed
