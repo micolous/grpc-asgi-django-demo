@@ -1,0 +1,52 @@
+[project]
+name = "grpc_asgi_django_demo_proto"
+version = "1.0.0"
+requires-python = ">=3.12"
+authors = [
+    { name = "Michael Farrell", email = "micolous+git@gmail.com" },
+]
+dependencies = [
+    # https://protobuf.dev/support/cross-version-runtime-guarantee/
+    "grpcio==1.70.0",
+    "protobuf>=5.28.2,<6",
+    "googleapis-common-protos>=1.69.1,<2",
+]
+license = "Apache-2.0 OR BSD-3-Clause"
+classifiers = ["Private :: Do Not Upload"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["proto"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["proto/grpc_asgi_django_demo", "python/grpc_asgi_django_demo"]
+
+[tool.hatch.build.hooks.custom]
+output_path = "python/grpc_asgi_django_demo/proto/v1"
+
+[tool.hatch.build.hooks.protobuf]
+dependencies = [
+    "hatch-protobuf==0.3.0.post1",
+    # https://protobuf.dev/support/cross-version-runtime-guarantee/
+    "grpcio-tools==1.70.0",
+    "mypy-protobuf~=3.0",
+    "googleapis-common-protos>=1.69.1,<2",
+]
+proto_paths = ["proto"]
+import_site_packages = true
+output_path = "python"
+generate_pyi = false
+generate_grpc = true
+
+[[tool.hatch.build.hooks.protobuf.generators]]
+# mypy-protobuf generator is a little nicer than the built-in pyi generator,
+# because it includes comments.
+name = "mypy"
+outputs = ["{proto_path}/{proto_name}_pb2.pyi"]
+
+[[tool.hatch.build.hooks.protobuf.generators]]
+name = "mypy_grpc"
+outputs = ["{proto_path}/{proto_name}_pb2_grpc.pyi"]

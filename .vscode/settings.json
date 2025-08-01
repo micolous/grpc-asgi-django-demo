@@ -1,0 +1,20 @@
+{
+    // Ensure exactly one newline at the end of files.
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.readonlyInclude": {
+        "**/.venv": true,
+        "**/*_pb2{,_grpc}.py{,i}": true,
+    },
+    "python.terminal.activateEnvironment": false,
+    "python.terminal.activateEnvInCurrentTerminal": false,
+    "[proto3]": {
+        "editor.defaultFormatter": "seaube.clangformat"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "[textproto]": {
+        "editor.defaultFormatter": "seaube.clangformat"
+    },
+}

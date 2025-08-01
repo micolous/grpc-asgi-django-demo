@@ -1,0 +1,11 @@
+Language: Proto
+BasedOnStyle: google
+AlwaysBreakBeforeMultilineStrings: true
+# Don't line-break Markdown footnotes or named links
+CommentPragmas: "\\[[^]]+\\]:"
+
+---
+Language: TextProto
+BasedOnStyle: google
+AlwaysBreakBeforeMultilineStrings: true
+CommentPragmas: "proto-(file|message):"

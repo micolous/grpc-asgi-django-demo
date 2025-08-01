@@ -1,0 +1,70 @@
+services:
+  grpc-asgi-server:
+    build:
+      target: "grpc-asgi-server"
+    image: "grpc-asgi-server"
+    pull_policy: build
+    develop:
+      watch:
+        - path: server/
+          action: rebuild
+          ignore:
+            - '.mypy_cache'
+            - '.pytype'
+            - '.venv'
+            - '__pycache__'
+        - path: proto/
+          action: rebuild
+
+    environment:
+      TRUST_X_FORWARDED_FOR: '1'
+      SQLITE_DB: '/django_db/django.db3'
+
+    secrets:
+      - source: secret_key
+        target: SECRET_KEY
+
+    volumes:
+      - django_db:/django_db
+
+    networks:
+      - backend
+
+  grpc-asgi-envoy:
+    build:
+      target: "grpc-asgi-envoy"
+    image: "grpc-asgi-envoy"
+    pull_policy: build
+    ports:
+      - name: envoy
+        target: 8080
+        published: 8080
+        protocol: tcp
+        app_protocol: http
+    post_start:
+      - command: 'echo "Envoy running at: http://localhost:8080"'
+    depends_on:
+      grpc-asgi-server:
+        condition: service_healthy
+        required: true
+        restart: false
+    develop:
+      watch:
+        - path: envoy/
+          action: rebuild
+        - path: proto/
+          action: rebuild
+    networks:
+      - backend
+
+
+secrets:
+  secret_key:
+    environment: "SECRET_KEY"
+
+
+networks:
+  backend:
+
+volumes:
+  django_db:

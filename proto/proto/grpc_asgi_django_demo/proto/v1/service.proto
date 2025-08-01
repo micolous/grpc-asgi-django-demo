@@ -1,0 +1,56 @@
+// gRPC ASGI Django demo service
+syntax = "proto3";
+package grpc_asgi_django_demo.proto.v1;
+
+import "google/api/annotations.proto";
+import "google/api/httpbody.proto";
+
+// ASGI proxy service.
+service AsgiService {
+  // Proxy to serve an ASGI application (like Django) through HTTP-over-gRPC.
+  //
+  // Envoy's gRPC-JSON transcoder can serve
+  // [arbitrary HTTP requests and responses over gRPC][0].
+  //
+  // This method **must not** be available over gRPC or gRPC-Web to untrusted
+  // clients. It is only safe to use after going through Envoy's gRPC-JSON
+  // transcoder.
+  //
+  // This method passes the HTTP response code in the `x-http-code` header.
+  // Envoy needs a Lua filter to use this as the HTTP response header for the
+  // client:
+  // <https://github.com/envoyproxy/envoy/issues/21839#issuecomment-1164916248>
+  //
+  // [0]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_json_transcoder_filter#sending-arbitrary-content
+  rpc Handler(google.api.HttpBody) returns (google.api.HttpBody) {
+    option (google.api.http) = {
+      custom: { kind: "*" path: "/**" }
+    };
+  }
+}
+
+// Another gRPC service to demonstrate the gRPC-JSON API transcoder.
+service DemoService {
+  // Adds two numbers together.
+  rpc Add(AddRequest) returns (AddResponse) {
+    option (google.api.http) = {
+      post: "/api/add"
+      body: "*"
+    };
+  }
+}
+
+// Addition request.
+message AddRequest {
+  // First number to add.
+  int32 a = 1;
+
+  // Second number to add.
+  int32 b = 2;
+}
+
+// Addition response.
+message AddResponse {
+  // Result of `a + b`.
+  int32 o = 1;
+}
