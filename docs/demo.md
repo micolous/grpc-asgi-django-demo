@@ -111,7 +111,8 @@ You can trigger both [server-originated](#server-originated-errors) and
 ##### Server-originated errors
 
 `DemoService.Add` arguments both default to 0 if not supplied. If both `a` and
-`b` are `0`, the gRPC server will return an error:
+`b` are `0`,
+[the gRPC server will return an error](../server/src/grpc_asgi_django_demo/server/demo_impl.py):
 
 ```sh
 curl -i --json '{}' http://localhost:8080/api/add
@@ -291,6 +292,6 @@ environment:
 [grpcurl]: https://github.com/fullstorydev/grpcurl/
 [grstatus]: https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto
 [lua]: ./envoy/x_http_code_as_status.lua
-[service.proto]: ./proto/proto/grpc_asgi_django_demo/proto/v1/service.proto
-[settingspy]: ./server/src/grpc_asgi_django_demo/server/django/settings.py
+[service.proto]: ../proto/proto/grpc_asgi_django_demo/proto/v1/service.proto
+[settingspy]: ../server/src/grpc_asgi_django_demo/server/django/settings.py
 [x-forwarded-host]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_conn_man/headers.html#x-forwarded-host

@@ -48,8 +48,8 @@ exercise for the reader. :)
 - 🔰 **Start here:** [run the demo environment with Docker Compose](./docs/demo.md)
 - 📚 **Deep dive:** [architecture overview](./docs/architecture.md), including
   concepts, request flows, and limitations of this demo
-- 💬 **Got issues, ideas or PRs?** [Contributing to the project](./CONTRIBUTING.md)
-- 🔒 **Found a security bug?** [Security policy](./SECURITY.md)
+- 💬 **Got issues, ideas or PRs?** [How to contribute to the project](./CONTRIBUTING.md)
+- 🔒 **Found a security bug?** [See the security policy](./SECURITY.md)
 
 ## License
 

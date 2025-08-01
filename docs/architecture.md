@@ -104,8 +104,8 @@ As far as a client's browser is concerned, it's making normal HTTP requests, and
 getting normal HTTP responses. It doesn't even have to use HTTP/2!
 
 Inside of [our gRPC server][server], [`AsgiService`][AsgiService] transcodes
-requests and responses to/from [ASGI-compatible API calls][asgi-http] for
-Django's ASGI handler:
+gRPC requests to [ASGI-compatible API calls][asgi-http] for Django's ASGI
+handler:
 
 ```mermaid
 sequenceDiagram
@@ -173,15 +173,15 @@ sequenceDiagram
     Envoy-->>-Client: gRPC response
 ```
 
-[AsgiService]: ./server/src/grpc_asgi_django_demo/server/asgi_impl.py
+[AsgiService]: ../server/src/grpc_asgi_django_demo/server/asgi_impl.py
 [asgi-http]: https://asgi.readthedocs.io/en/latest/specs/www.html
 [asgi-proto]: https://asgi.readthedocs.io/en/latest/specs/main.html#overview
 [grpc-json]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_json_transcoder_filter
 [grpc-http2]: https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md
 [grpc-web]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_web_filter
-[hatch-build]: ./proto/hatch_build.py
+[hatch-build]: ../proto/hatch_build.py
 [proto-json]: https://protobuf.dev/programming-guides/json/
 [proto-wire]: https://protobuf.dev/programming-guides/encoding/#structure
-[server]: ./server/
-[service.proto]: ./proto/proto/grpc_asgi_django_demo/proto/v1/service.proto
+[server]: ../server/
+[service.proto]: ../proto/proto/grpc_asgi_django_demo/proto/v1/service.proto
 [uvicorn]: https://www.uvicorn.org/
