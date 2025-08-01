@@ -47,7 +47,9 @@ docker compose up --build --watch --abort-on-container-failure
 
 Once the environment is built and running, point your browser at
 http://localhost:8080/, and you should be greeted with a Django debug mode 404
-error page!
+error page:
+
+![Django 404 error](./img/django-404.png)
 
 This runs [Django's ASGI handler via HTTP-over-gRPC](./architecture.md#asgi-request-flow).
 
@@ -64,6 +66,8 @@ docker compose exec grpc-asgi-server gadd-manage createsuperuser
 
 Once you have a superuser account, you should be able to use it to log in to
 the Django admin interface at http://localhost:8080/admin/.
+
+![Django admin panel](./img/django-admin.png)
 
 ### Make a JSON API call
 
@@ -97,6 +101,9 @@ to JSON.
 
 gRPC-level errors are returned as [`google.rpc.Status` messages][grstatus]
 converted to JSON.
+
+You can trigger both [server-originated](#server-originated-errors) and
+[Envoy-originated errors](#envoy-originated-errors) to see how this works:
 
 ##### Server-originated errors
 
@@ -209,6 +216,8 @@ environment:
 
 - No custom error types (for `google.rpc.Status.details`) are included in the
   `FileDescriptorSet` passed to Envoy, as the demo server doesn't use these.
+
+- This demo doesn't support chunked HTTP requests or WebSockets.
 
 - This demo doesn't provide any API authentication or authorisation features.
 

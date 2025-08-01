@@ -47,7 +47,7 @@ The code in this repository is licensed under your choice of the
 Any [contributions](./CONTRIBUTING.md) made to the project must be your own
 work, and shall be licensed under the same terms.
 
-The Docker images in this project contain software distributed under various
+The Docker images this project builds contain software distributed under various
 other licenses. Of note:
 
 - `asgiref` is distributed under a 3-clause BSD license
@@ -55,6 +55,8 @@ other licenses. Of note:
 - Envoy is distributed under the Apache 2.0 license
 - [`grpc-health-probe`][grpc-health-probe] is distributed under the Apache 2.0
   license
+
+This project does not distribute complete Docker images or packages.
 
 [aip-127]: https://google.aip.dev/127
 [asgi-proto]: https://asgi.readthedocs.io/en/latest/specs/main.html#overview

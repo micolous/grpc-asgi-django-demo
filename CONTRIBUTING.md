@@ -19,7 +19,9 @@ to someone else.
 
 ## Repository layout
 
+- `.github`: GitHub settings
 - `.vscode`: Visual Studio Code settings
+- `docs`: Documentation and architecture overview
 - `envoy`: Envoy configuration, used for gRPC-JSON transcoding
 - `proto`: Protobuf/gRPC service descriptors and Python bindings
 - `scripts`: Contains a setup script
@@ -87,7 +89,7 @@ Remember: "tech demo"! :)
   - [gRPC community][grpc]
 
 - If you have a question about how something in _this_ repository works, please
-  use the discussions tab.
+  use [the discussions tab][discussions].
 
   The goal is that these will be answered by the documentation.
 
@@ -113,6 +115,7 @@ Examples of welcomed contributions:
 - Fixing issues where I've implemented ASGI incorrectly (even if the issue
   _doesn't_ affect Django)
 
+[discussions]: https://github.com/micolous/grpc-asgi-django-demo/discussions
 [django]: https://www.djangoproject.com/community/
 [envoy]: https://www.envoyproxy.io/community
 [grpc]: https://grpc.io/community/

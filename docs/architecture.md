@@ -2,8 +2,8 @@
 
 _In this document:_
 
-- [Useful concepts](#useful-concepts)
-- [Request flows](#request-flows)
+- [Useful concepts](#useful-concepts) and background about the components used
+- [Request flows](#request-flows) in the demo
 
 ## Useful concepts
 
@@ -96,6 +96,9 @@ sequenceDiagram
     Envoy-->>-Client's browser: HTTP response
 ```
 
+As far as a client's browser is concerned, it's making normal HTTP requests, and
+getting normal HTTP responses. It doesn't even have to use HTTP/2!
+
 Inside of [our gRPC server][server], [`AsgiService`][AsgiService] transcodes
 requests and responses to/from [ASGI-compatible API calls][asgi-http] for
 Django's ASGI handler:
@@ -116,13 +119,16 @@ sequenceDiagram
     note over AsgiService: Send response <br> body to Envoy <br> as gRPC
 ```
 
+As far as Django is concerned, it's talking to a perfectly normal ASGI protocol
+server that always gets HTTP/2 requests.
+
 ### JSON API request flow
 
 This is all pretty ordinary for [gRPC-JSON transcoding][grpc-json], and there's
 nothing particularly special here.
 
 Envoy routes and transcodes requests to gRPC based on `google.api.http`
-annotations:
+annotations in [`service.proto`][service.proto]:
 
 ```mermaid
 sequenceDiagram
@@ -168,6 +174,7 @@ sequenceDiagram
 [asgi-proto]: https://asgi.readthedocs.io/en/latest/specs/main.html#overview
 [grpc-json]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_json_transcoder_filter
 [grpc-http2]: https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md
+[grpc-web]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_web_filter
 [hatch-build]: ./proto/hatch_build.py
 [proto-json]: https://protobuf.dev/programming-guides/json/
 [proto-wire]: https://protobuf.dev/programming-guides/encoding/#structure
