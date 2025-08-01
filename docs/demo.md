@@ -175,7 +175,7 @@ Some general limitations:
 - Django's `manage.py runserver` doesn't work (and will never work).
 
   Supporting that would mean finding a way to send gRPC over _WSGI_, which
-  doesn't the parts of HTTP/2 that gRPC uses.
+  doesn't support the parts of HTTP/2 that gRPC uses.
 
 - This demo relies on a number of Envoy-specific headers and features to work,
   which are not part of the [gRPC-JSON transcoding spec][aip-127], such as:
@@ -254,6 +254,8 @@ environment:
   The project that this was derived was built using GitLab CI, automatically
   pushed builds to AWS ECR, and was deployed to AWS ECS on Fargate. All of the
   infrastructure for that was declared using Terraform.
+
+  Including that here is complicated, and highly specific to that deployment.
 
 - There are no linters, type checks or tests in this demo.
 
